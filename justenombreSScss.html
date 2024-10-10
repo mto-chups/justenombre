@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<header>
+    <link rel="stylesheet" href="./styles.css">
+    <meta charset="utf-8">
+    <title>Le juste nombre</title>
+</header>
+
+<body>
+
+    <h1>Le jeu du juste nombre</h1>
+
+    <h2>Saisir un nombre :</h2>
+    <input type="number" id="nombrejoueur">
+    <button onclick="tentative()">Essayer</button>
+    <h4 id="conseil"></h3>
+    <h3 id="nbtentative"></h3>
+    
+    <script>
+        var score = 0;
+        var random = 0;
+        function nombrealeatoire(){
+            random = Math.random() * (1000 - 1) + 1;
+            random = Math.round(random);
+            console.log(random);
+        }
+
+        function tentative(){
+            score = score +1;
+            var nombrejoueur;
+            nombrejoueur = document.getElementById('nombrejoueur').value;
+            if(random == nombrejoueur){
+                document.getElementById('nbtentative').textContent = "Vous avez gagné en faisant : "+score+" tentatives.";
+                document.getElementById('conseil').textContent = "Vous avez gagné.";
+
+            }else{
+
+                document.getElementById('nbtentative').textContent = "Vous avez fait : "+score+" tentatives.";
+                
+                if(nombrejoueur > random){
+                    document.getElementById('conseil').textContent = "Le nombre cherché est moins grand.";
+                }else{
+                    document.getElementById('conseil').textContent = "Le nombre cherché est plus grand.";
+
+                }
+            }
+        }
+        
+
+        nombrealeatoire();
+    </script>
+</body>
+</html>

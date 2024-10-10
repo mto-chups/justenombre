@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Le juste nombre</title>
+    <link rel="icon" type="image/png" href="./medias/JavaScript-logo.png" />
+    <style>
+        body{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;
+
+        }
+        .center, h1, p{
+            text-align: center;
+        }
+
+        /* From Uiverse.io by iZOXVL */ 
+        .btn {
+        padding: 15px 30px;
+        border: 2px solid #2c2c2c;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        border-radius: 30px;
+        transition: all 0.4s ease;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        font-weight: bold;
+        margin: 30px;
+        }
+
+        .btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.25) 0%,
+            rgba(255, 255, 255, 0) 70%
+        );
+        transform: scale(0);
+        transition: transform 0.5s ease;
+        }
+
+        .btn:hover::after {
+        transform: scale(4);
+        }
+
+        .btn:hover {
+        border-color: #666666;
+        background: #292929;
+        }
+
+        .nombrejoueur {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #555;
+        outline: none;
+        }
+
+        .nombrejoueur:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }   
+
+        /* Pluie de victoire */
+
+        .trophee {
+            position: absolute;
+            top: -130px;
+            width: 30px;
+            height: 30px;
+            background-image: url('./medias/trophee.png'); /* Image temporaire pour tester */
+            background-size: cover;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Falling animation */
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+        <div class="trophee"></div>
+
+    <h1>Le jeu du juste nombre</h1>
+    <div class="center">
+        <h2>Saisir un nombre :</h2>
+        <!-- Fleche -->
+        <img src="./medias/fleche-vers-le-bas.gif" width="40px" id="flechebas">
+        <!-- Input Nombre -->
+        <input type="number" min="0" max="1000" class="nombrejoueur" id="nombrejoueur">
+        <!-- Fleche -->
+        <img src="./medias/fleche-vers-le-haut.gif" width="40px" id="flechehaut">
+
+        </br>   
+
+        <h4 id="conseil"></h3>
+        <h3 id="nbtentative"></h3>
+
+        <button onclick="tentative()" class="btn" id="btn">Essayer</button>
+        <button onclick="window.location.reload();" class="btn" id="replay">Rejouer</button>
+
+    </div>
+    <script>
+        document.getElementById('flechehaut').style.visibility="hidden";
+        document.getElementById('flechebas').style.visibility="hidden";
+        var score = 0;
+        var random = 0;
+        function nombrealeatoire(){
+            random = Math.random() * (1000 - 1) + 1;
+            random = Math.round(random);
+            console.log(random);
+        }
+
+        function tentative(){
+            document.getElementById('flechehaut').style.visibility="hidden";
+            document.getElementById('flechebas').style.visibility="hidden";
+
+            score = score +1;
+            var nombrejoueur;
+            nombrejoueur = document.getElementById('nombrejoueur').value;
+            if(random == nombrejoueur){
+                document.getElementById('nbtentative').textContent = "Vous avez gagné en faisant : "+score+" tentatives.";
+                document.getElementById('conseil').textContent = "Vous avez gagné.";
+                document.getElementById('conseil').style.color="green";
+                document.getElementById('nbtentative').style.color="green";
+                lancerPluieDeTrophees();
+                
+            }else{
+
+                document.getElementById('nbtentative').textContent = "Vous avez fait : "+score+" tentatives.";
+                
+                if(nombrejoueur > random){
+                    document.getElementById('conseil').textContent = "Le nombre cherché est moins grand.";
+                    document.getElementById('flechebas').style.visibility="visible";
+                }else{
+                    document.getElementById('conseil').textContent = "Le nombre cherché est plus grand.";
+                    document.getElementById('flechehaut').style.visibility="visible";
+                }
+            }
+        }
+        
+        function lancerPluieDeTrophees() {
+            const trophees = document.querySelectorAll('.trophee');
+            trophees.forEach((trophee, index) => {
+                const randomDelay = Math.random() * 2;
+                const randomX = Math.random() * 100;
+                trophee.style.left = `${randomX}%`;
+                trophee.style.animation = `fall 3s linear ${randomDelay}s infinite`;
+                trophee.style.opacity = 1;
+            });
+            setTimeout(() => {
+                trophees.forEach((trophee) => {
+                    trophee.style.animation = '';
+                    trophee.style.opacity = 0;
+                });
+            }, 8000);
+        }
+
+        nombrealeatoire();
+    </script>
+</body>
+</html>
